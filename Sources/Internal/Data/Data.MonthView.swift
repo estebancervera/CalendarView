@@ -25,7 +25,7 @@ extension [Data.MonthView] {
     }
 }
 private extension [Data.MonthView] {
-    static func createDatesRange() -> ClosedRange<Int> { let startDate = MCalendar.startDate, endDate = MCalendar.endDate
+    static func createDatesRange() -> ClosedRange<Int> {
         let startDate = MCalendar.startDate, endDate = MCalendar.endDate
         guard startDate <= endDate else {
             MCalendar.endDate = startDate
