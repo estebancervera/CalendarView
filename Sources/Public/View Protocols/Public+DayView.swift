@@ -18,11 +18,17 @@ public protocol DayView: View {
     var selectedDate: Binding<Date?>? { get }
     var selectedRange: Binding<MDateRange?>? { get }
 
+    // MARK: Associated Types
+    associatedtype ContentViewType: View
+    associatedtype DayLabelViewType: View
+    associatedtype SelectionViewType: View
+    associatedtype RangeSelectionViewType: View
+
     // MARK: View Customisation
-    func createContent() -> AnyView
-    func createDayLabel() -> AnyView
-    func createSelectionView() -> AnyView
-    func createRangeSelectionView() -> AnyView
+    func createContent() -> ContentViewType
+    func createDayLabel() -> DayLabelViewType
+    func createSelectionView() -> SelectionViewType
+    func createRangeSelectionView() -> RangeSelectionViewType
 
     // MARK: Logic
     func onAppear()
@@ -31,10 +37,10 @@ public protocol DayView: View {
 
 // MARK: - Default View Implementation
 public extension DayView {
-    func createContent() -> AnyView { createDefaultContent().erased() }
-    func createDayLabel() -> AnyView { createDefaultDayLabel().erased() }
-    func createSelectionView() -> AnyView { createDefaultSelectionView().erased() }
-    func createRangeSelectionView() -> AnyView { createDefaultRangeSelectionView().erased() }
+    func createContent() -> some View { createDefaultContent() }
+    func createDayLabel() -> some View { createDefaultDayLabel() }
+    func createSelectionView() -> some View { createDefaultSelectionView() }
+    func createRangeSelectionView() -> some View { createDefaultRangeSelectionView() }
 }
 private extension DayView {
     func createDefaultContent() -> some View { ZStack {
@@ -118,3 +124,4 @@ private extension DayView {
     }
     func createBodyForOtherMonth() -> some View { Rectangle().fill(Color.clear) }
 }
+
