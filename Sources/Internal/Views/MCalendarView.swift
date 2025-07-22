@@ -23,9 +23,29 @@ public struct MCalendarView: View {
         self.monthsData = .generate()
     }
     public var body: some View {
+        if configData.hasStickyHeader && configData.showHeader {
+            stickyBody
+        } else {
+            defaultBody
+        }
+    }
+
+    private var defaultBody: some View {
         VStack(spacing: 12) {
-            createWeekdaysView()
+            if configData.showHeader {
+                createWeekdaysView()
+            }
             createScrollView()
+        }
+    }
+
+    private var stickyBody: some View {
+        LazyVStack(spacing: 12, pinnedViews: [.sectionHeaders]) {
+            Section {
+                createScrollView()
+            } header: {
+                createWeekdaysView()
+            }
         }
     }
 }
