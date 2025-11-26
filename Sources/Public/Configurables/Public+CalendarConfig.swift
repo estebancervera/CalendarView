@@ -60,6 +60,11 @@ public extension CalendarConfig {
     /// - Parameter value: Pass `true` to display the header, or `false` to hide it.
     /// - Returns: A modified `CalendarConfig` with the specified header visibility setting.
     func showHeader(_ value: Bool) -> Self { changing(path: \.showHeader, to: value) }
+
+    /// Controls whether scrolling is enabled for the calendar view.
+    /// - Parameter value: Pass `true` to disable scrolling, or `false` to allow the calendar to scroll.
+    /// - Returns: A modified `CalendarConfig` with the specified scroll behavior setting.
+    func isScrollDisabled(_ value: Bool) -> Self { changing(path: \.isScrollDisabled, to: value) }
 }
 
 // MARK: - View Customisation
@@ -108,4 +113,5 @@ public struct CalendarConfig: Configurable { public init() {}
 
     private(set) var hasStickyHeader: Bool = false
     private(set) var showHeader: Bool = true
+    private(set) var isScrollDisabled: Bool = false
 }

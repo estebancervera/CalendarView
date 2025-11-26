@@ -53,18 +53,21 @@ private extension MCalendarView {
     func createWeekdaysView() -> some View {
         configData.weekdaysView().erased()
     }
-    func createScrollView() -> some View { ScrollViewReader { reader in
-        ScrollView(showsIndicators: false) {
-            LazyVStack(spacing: configData.monthsSpacing) {
-                ForEach(monthsData, id: \.month, content: createMonthItem)
+    func createScrollView() -> some View {
+        ScrollViewReader { reader in
+            ScrollView(showsIndicators: false) {
+                LazyVStack(spacing: configData.monthsSpacing) {
+                    ForEach(monthsData, id: \.month, content: createMonthItem)
+                }
+                .padding(.top, configData.monthsPadding.top)
+                .padding(.bottom, configData.monthsPadding.bottom)
+                .background(configData.monthsViewBackground)
             }
-            .padding(.top, configData.monthsPadding.top)
-            .padding(.bottom, configData.monthsPadding.bottom)
-            .background(configData.monthsViewBackground)
+            .scrollDisabled(configData.isScrollDisabled)
+            .onAppear() { scrollToDate(reader, animatable: false) }
+            .onChange(of: configData.scrollDate) { _ in scrollToDate(reader, animatable: true) }
         }
-        .onAppear() { scrollToDate(reader, animatable: false) }
-        .onChange(of: configData.scrollDate) { _ in scrollToDate(reader, animatable: true) }
-    }}
+    }
 }
 private extension MCalendarView {
     func createMonthItem(_ data: Data.MonthView) -> some View {
