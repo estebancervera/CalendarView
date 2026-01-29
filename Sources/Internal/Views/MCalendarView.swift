@@ -23,9 +23,29 @@ public struct MCalendarView: View {
         self.monthsData = .generate()
     }
     public var body: some View {
+        if configData.hasStickyHeader && configData.showHeader {
+            stickyBody
+        } else {
+            defaultBody
+        }
+    }
+
+    private var defaultBody: some View {
         VStack(spacing: 12) {
-            createWeekdaysView()
+            if configData.showHeader {
+                createWeekdaysView()
+            }
             createScrollView()
+        }
+    }
+
+    private var stickyBody: some View {
+        LazyVStack(spacing: 12, pinnedViews: [.sectionHeaders]) {
+            Section {
+                createScrollView()
+            } header: {
+                createWeekdaysView()
+            }
         }
     }
 }
@@ -33,18 +53,21 @@ private extension MCalendarView {
     func createWeekdaysView() -> some View {
         configData.weekdaysView().erased()
     }
-    func createScrollView() -> some View { ScrollViewReader { reader in
-        ScrollView(showsIndicators: false) {
-            LazyVStack(spacing: configData.monthsSpacing) {
-                ForEach(monthsData, id: \.month, content: createMonthItem)
+    func createScrollView() -> some View {
+        ScrollViewReader { reader in
+            ScrollView(showsIndicators: false) {
+                LazyVStack(spacing: configData.monthsSpacing) {
+                    ForEach(monthsData, id: \.month, content: createMonthItem)
+                }
+                .padding(.top, configData.monthsPadding.top)
+                .padding(.bottom, configData.monthsPadding.bottom)
+                .background(configData.monthsViewBackground)
             }
-            .padding(.top, configData.monthsPadding.top)
-            .padding(.bottom, configData.monthsPadding.bottom)
-            .background(configData.monthsViewBackground)
+            .scrollDisabled(configData.isScrollDisabled)
+            .onAppear() { scrollToDate(reader, animatable: false) }
+            .onChange(of: configData.scrollDate) { _ in scrollToDate(reader, animatable: true) }
         }
-        .onAppear() { scrollToDate(reader, animatable: false) }
-        .onChange(of: configData.scrollDate) { _ in scrollToDate(reader, animatable: true) }
-    }}
+    }
 }
 private extension MCalendarView {
     func createMonthItem(_ data: Data.MonthView) -> some View {

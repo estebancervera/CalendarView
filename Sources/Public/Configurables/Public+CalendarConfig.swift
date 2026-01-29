@@ -49,6 +49,22 @@ public extension CalendarConfig {
 
     /// Sets the horizontal spacing between day cells in the view.
     func daysHorizontalSpacing(_ value: CGFloat) -> Self { changing(path: \.daysSpacing.horizontal, to: value) }
+
+
+    /// Sets whether the calendar's header remains fixed at the top while scrolling.
+    /// - Parameter value: Pass `true` to keep the header sticky, or `false` to allow it to scroll with the content.
+    /// - Returns: A modified `CalendarConfig` with the specified sticky header setting.
+    func hasStickyHeader(_ value: Bool) -> Self { changing(path: \.hasStickyHeader, to: value) }
+
+    /// Controls the visibility of the calendar's header view.
+    /// - Parameter value: Pass `true` to display the header, or `false` to hide it.
+    /// - Returns: A modified `CalendarConfig` with the specified header visibility setting.
+    func showHeader(_ value: Bool) -> Self { changing(path: \.showHeader, to: value) }
+
+    /// Controls whether scrolling is enabled for the calendar view.
+    /// - Parameter value: Pass `true` to disable scrolling, or `false` to allow the calendar to scroll.
+    /// - Returns: A modified `CalendarConfig` with the specified scroll behavior setting.
+    func isScrollDisabled(_ value: Bool) -> Self { changing(path: \.isScrollDisabled, to: value) }
 }
 
 // MARK: - View Customisation
@@ -94,4 +110,8 @@ public struct CalendarConfig: Configurable { public init() {}
 
     private(set) var scrollDate: Date? = nil
     private(set) var onMonthChange: (Date) -> () = {_ in}
+
+    private(set) var hasStickyHeader: Bool = false
+    private(set) var showHeader: Bool = true
+    private(set) var isScrollDisabled: Bool = false
 }
